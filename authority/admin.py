@@ -1,6 +1,6 @@
 from django import forms
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext, ungettext, gettext_lazy as _
+from django.utils.translation import gettext, ngettext, gettext_lazy as _
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.forms.formsets import all_valid
@@ -100,7 +100,7 @@ def edit_permissions(modeladmin, request, queryset):
 
     context = {
         "errors": ActionErrorList(formsets),
-        "title": ugettext("Permissions for %s") % force_text(opts.verbose_name_plural),
+        "title": gettext("Permissions for %s") % force_text(opts.verbose_name_plural),
         "inline_admin_formsets": inline_admin_formsets,
         "app_label": app_label,
         "change": True,
