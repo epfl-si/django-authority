@@ -1,6 +1,6 @@
 from django import forms
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext, ungettext, ugettext_lazy as _
+from django.utils.translation import ugettext, ungettext, gettext_lazy as _
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.forms.formsets import all_valid
