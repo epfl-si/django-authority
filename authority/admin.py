@@ -12,15 +12,17 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 
 from sys import version_info as python_version
-if django_version[0] >= 4:
+if django_version >= (4, 0):
     from django.utils.encoding import force_str as force_text  # Django 4.x
-elif django_version[0] >= 2:
+elif django_version >= (2, 0):
     from django.utils.encoding import force_text  # Django 2.x and 3.x
-else:
+elif django_version >= (1, 11):
     if python_version[0] < 3:
-        from django.utils.encoding import force_unicode as force_text  # Django 1.x with Python 2.x
+        from django.utils.encoding import force_unicode as force_text # Django 1.x with Python 2.7
     else:
-        raise ImportError("Unsupported Django version or Python version")
+        from django.utils.encoding import force_text
+else:
+    raise ImportError("Unsupported Django version or Python version")
 
 from authority.models import Permission
 from authority.widgets import GenericForeignKeyRawIdWidget
