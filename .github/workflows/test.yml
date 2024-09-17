@@ -19,8 +19,9 @@ jobs:
       if: matrix.python-version == '2.7'
       run: |
         sudo apt-get update
-        sudo apt-get install -y python2.7 python-pip
-        python2.7 -m pip install --upgrade "pip<21.0" "setuptools<45"
+        sudo apt-get install -y python2.7 curl
+        curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+        python2.7 get-pip.py --upgrade "pip<21.0" "setuptools<45"
         python2.7 -m pip install tox==3.24.4 tox-gh-actions
 
     - name: Set up Python ${{ matrix.python-version }}
