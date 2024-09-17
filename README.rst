@@ -58,6 +58,12 @@ html version using the setup.py::
 Changelog:
 ==========
 
+0.16 (changed in fork → epfl-si)
+--------------------------------
+
+* Add Django 3.2 and 4.2 support.
+* Add Python 3.9, 3.10, 3.11 and 3.12 support.
+
 0.15 (unreleased):
 ------------------
 
