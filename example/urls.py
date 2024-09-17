@@ -1,6 +1,12 @@
 import django.contrib.auth.views
-from django.conf.urls import include, handler500, url
+from django.conf.urls import include, handler500
 from django.conf import settings
+
+from django import VERSION
+if VERSION < (2, 0):
+    from django.conf.urls import url
+else:
+    from django.urls import re_path as url
 
 import authority.views
 import authority.urls

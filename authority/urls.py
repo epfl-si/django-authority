@@ -1,4 +1,9 @@
-from django.conf.urls import url
+from django import VERSION
+if VERSION < (2, 0):
+    from django.conf.urls import url
+else:
+    from django.urls import re_path as url
+
 from authority.views import (
     add_permission,
     delete_permission,

@@ -1,4 +1,5 @@
 from django import forms
+from django import VERSION as django_version
 from django.http import HttpResponseRedirect
 from django.utils.translation import gettext, ngettext, gettext_lazy as _
 from django.shortcuts import render
@@ -10,10 +11,16 @@ from django.contrib.contenttypes.admin import GenericTabularInline
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 
-try:
-    from django.utils.encoding import force_text
-except ImportError:
-    from django.utils.encoding import force_unicode as force_text
+from sys import version_info as python_version
+if django_version[0] >= 4:
+    from django.utils.encoding import force_str as force_text  # Django 4.x
+elif django_version[0] >= 2:
+    from django.utils.encoding import force_text  # Django 2.x and 3.x
+else:
+    if python_version[0] < 3:
+        from django.utils.encoding import force_unicode as force_text  # Django 1.x with Python 2.x
+    else:
+        raise ImportError("Unsupported Django version or Python version")
 
 from authority.models import Permission
 from authority.widgets import GenericForeignKeyRawIdWidget
