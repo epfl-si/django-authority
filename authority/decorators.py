@@ -1,12 +1,17 @@
 import inspect
 from django.http import HttpResponseRedirect
-from django.utils.http import urlquote
 from django.utils.functional import wraps
 from django.db.models import Model
 from django.apps import apps
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
+
+from sys import version_info
+if version_info[0] < 3:
+    from urllib import quote as urlquote  # Python 2.7
+else:
+    from urllib.parse import quote as urlquote  # Python 3.x
 
 from authority.utils import get_check
 from authority.views import permission_denied

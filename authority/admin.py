@@ -1,6 +1,7 @@
 from django import forms
+from django import VERSION as django_version
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext, ungettext, ugettext_lazy as _
+from django.utils.translation import gettext, ngettext, gettext_lazy as _
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.forms.formsets import all_valid
@@ -10,10 +11,18 @@ from django.contrib.contenttypes.admin import GenericTabularInline
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 
-try:
-    from django.utils.encoding import force_text
-except ImportError:
-    from django.utils.encoding import force_unicode as force_text
+from sys import version_info as python_version
+if django_version >= (4, 0):
+    from django.utils.encoding import force_str as force_text  # Django 4.x
+elif django_version >= (2, 0):
+    from django.utils.encoding import force_text  # Django 2.x and 3.x
+elif django_version >= (1, 11):
+    if python_version[0] < 3:
+        from django.utils.encoding import force_unicode as force_text # Django 1.x with Python 2.7
+    else:
+        from django.utils.encoding import force_text
+else:
+    raise ImportError("Unsupported Django version or Python version")
 
 from authority.models import Permission
 from authority.widgets import GenericForeignKeyRawIdWidget
@@ -100,7 +109,7 @@ def edit_permissions(modeladmin, request, queryset):
 
     context = {
         "errors": ActionErrorList(formsets),
-        "title": ugettext("Permissions for %s") % force_text(opts.verbose_name_plural),
+        "title": gettext("Permissions for %s") % force_text(opts.verbose_name_plural),
         "inline_admin_formsets": inline_admin_formsets,
         "app_label": app_label,
         "change": True,
